@@ -1,4 +1,4 @@
-# Manage and reload Spring application properties on the fly
+# Manage and reload spring application properties on the fly
 
 By now, everybody is aware that configurable application properties should reside outside your artifact (war, jar, ear). We don't want to release a new version of your application/service, just to change a config file. Furthermore, we want the production artifact, to be identical to the object of development, test, etc.
   
@@ -9,6 +9,8 @@ The majority of those solutions require a restart of your application/service, b
 First, let me show you a way how to externalise your application properties and manage them from git. Git makes sense because it keeps track of any changes. You can see who altered what at any given point in time!
 
 To do this, we create a (micro) service. Let's call it the config-service.
+
+Code is available on [github](https://github.com/jeroenbellen/blog-manage-and-reload-spring-properties).
 
 Add the following dependencies to your config-service.
 
@@ -235,3 +237,6 @@ Change!%
 ### Conclusion
 By adding some simple, yet powerful, annotations, you can easily manage your properties from git. The refresh mechanism makes it easy to apply your property change on the fly.
 However, it 'd be good that the config service would push it's new values to its clients. That is possible, but I'll explain this in an upcoming blog post!
+
+### References
+[http://projects.spring.io/spring-cloud/spring-cloud.html](http://projects.spring.io/spring-cloud/spring-cloud.html)

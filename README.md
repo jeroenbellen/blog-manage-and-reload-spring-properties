@@ -1,14 +1,14 @@
 # Manage and reload Spring application properties on the fly
 
-By now, everybody is aware that configurable application properties should reside outside your artifact (war,jar,ear). We don't want to release a new version of your application/service, just to change a config file. Furthermore we want the production artifact, to be identical to the artifact of development, test, etc.
+By now, everybody is aware that configurable application properties should reside outside your artifact (war, jar, ear). We don't want to release a new version of your application/service, just to change a config file. Furthermore, we want the production artifact, to be identical to the object of development, test, etc.
   
 
 Luckily there are many options to externalise your configuration, Spring Boot even supports this logic out of the box. 
-The majority of those solutions require a restart of your application/service, but today i'll demonstrate how to omit this restriction. 
+The majority of those solutions require a restart of your application/service, but today I'll demonstrate how to omit this restriction. 
 
-First let me show you a way how to externalise your application properties and manage them from git. Git makes sense, because it keeps track of any changes. You can actually see who changed what at any given point in time!
+First, let me show you a way how to externalise your application properties and manage them from git. Git makes sense because it keeps track of any changes. You can see who altered what at any given point in time!
 
-To do this we create a (micro) service. Let's call it the config-service.
+To do this, we create a (micro) service. Let's call it the config-service.
 
 Add the following dependencies to your config-service.
 
@@ -29,7 +29,7 @@ Add the following dependencies to your config-service.
 
 Add the @EnableConfigServer annotation to your Spring Boot entry point. 
 This annotation will take care of all the configuration of the config server.
-Clean and simple!
+Clean and straightforward!
 
 ```java
 package com.github.jeroenbellen;
@@ -47,7 +47,7 @@ public class ConfigServiceApplication {
     }
 }
 ```
-Specify the path of your git repo which contains your properties within 'application.properties'.  
+Specify the path of your git repo which contains your properties within 'application.properties.'  
 
 ```
 server.port=8888
@@ -66,7 +66,7 @@ git add application.properties
 git commit -m 'Add foo.bar property'
 ```
 
-That's it, your basic config service is ready!
+That's it; your basic config service is ready!
 
 Now let's create a sample service.
 
@@ -118,7 +118,7 @@ public class ExampleServiceApplication {
 
 ```
 
-If you start the application you should see the following messages withing your log file. Clearly a sign that something cool is happening! ;)
+If you start the application, you should see the following messages withing your log file. Clearly, a sign that something cool is happening! ;)
 ```
 2016-08-20 13:38:14.878  INFO 60864 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at: http://localhost:8888
 2016-08-20 13:38:15.527  INFO 60864 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=application, profiles=[default], label=master, version=1e4c80569fc05655903c12c6087ffdf797a0c71e
@@ -146,9 +146,9 @@ curl -v http://localhost:8080
 Hi!% 
 ```
 
-Ain't that nice? 
-Ok but how do we change this property on the fly?
-In theory you could refresh the application context, but I wouldn't recommend this. Spring Cloud has provided an annotation to mark a bean as refreshable. By adding spring actuator we can refresh those beans on the fly.
+Isn't that nice? 
+Ok, but how do we change this property on the fly?
+In theory, you could refresh the application context, but I wouldn't recommend this. Spring Cloud has provided an annotation to mark a bean as refreshable. By adding spring actuator, we can refresh those beans on the fly.
 
 Add spring-boot-starter-actuator to your example service.
 ```xml
@@ -204,7 +204,7 @@ git commit -m 'A change'
 
 ```
 
-The config service will automatically detect the commit and start serving the new value. However we want to see the change within our example service. To do this we have to call the refresh endpoint that spring actuator has added for us.
+The config service will automatically detect the commit and start serving the new value. However, we want to see the change within our example service. To do this, we have to call the refresh endpoint that spring actuator has added for us.
 ```bash
 curl -X POST http://localhost:8080/refresh
 ["foo.bar"]%                                    
@@ -234,4 +234,4 @@ Change!%
 
 ### Conclusion
 By adding some simple, yet powerful, annotations, you can easily manage your properties from git. The refresh mechanism makes it easy to apply your property change on the fly.
-However it would be nice that the config service would push it's new values to its clients. This is possible but I'll explain this in an upcoming blog post!
+However, it 'd be good that the config service would push it's new values to its clients. That is possible, but I'll explain this in an upcoming blog post!

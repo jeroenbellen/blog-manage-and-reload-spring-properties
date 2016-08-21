@@ -1,18 +1,16 @@
 # Manage and reload Spring application properties on the fly
 
-By now everybody is aware that configurable application properties should live outside your packaged application. We don't want to release a new version of our application/service, just to change a config file. Furthermore we want that the production artifact is identical to the artifact in development, test, etc.
+By now, everybody is aware that configurable application properties should reside outside your artifact (war,jar,ear). We don't want to release a new version of your application/service, just to change a config file. Furthermore we want the production artifact, to be identical to the artifact of development, test, etc.
   
 
-Luckily there are many ways to externalise your configuration, Spring Boot even supports this logic out of the box. 
+Luckily there are many options to externalise your configuration, Spring Boot even supports this logic out of the box. 
 The majority of those solutions require a restart of your application/service, but today i'll demonstrate how to omit this restriction. 
 
-First let me show you a way how to externalise your application properties and manage them from git. Git makes sense because it keeps track of any changes. You can actually see who changed what at any given point in time!
+First let me show you a way how to externalise your application properties and manage them from git. Git makes sense, because it keeps track of any changes. You can actually see who changed what at any given point in time!
 
-To do this we create a (micro) service.
+To do this we create a (micro) service. Let's call it the config-service.
 
-
-
-Add the following dependencies to your maven project.
+Add the following dependencies to your config-service.
 
 ```xml
     <dependencies>
@@ -49,14 +47,14 @@ public class ConfigServiceApplication {
     }
 }
 ```
-Specify the path of your git repo which contains your properties within application.properties.  
+Specify the path of your git repo which contains your properties within 'application.properties'.  
 
 ```
 server.port=8888
 spring.cloud.config.server.git.uri=/tmp/example-properties
 ```
 
-Create a new git project which contains your properties.
+Create a new git project, which contains your properties.
 
 
 ```bash
@@ -72,7 +70,7 @@ That's it, your basic config service is ready!
 
 Now let's create a sample service.
 
-Add the following dependencies to the pom of your example service.
+Add the following dependencies to your example service.
 
 ```xml
         <dependency>
@@ -206,7 +204,7 @@ git commit -m 'A change'
 
 ```
 
-The config service will automatically detect the commit and start serving the new value. However we want to see the change within our example service. To do this we have to call the refresh endpoint that spring actuator has added.
+The config service will automatically detect the commit and start serving the new value. However we want to see the change within our example service. To do this we have to call the refresh endpoint that spring actuator has added for us.
 ```bash
 curl -X POST http://localhost:8080/refresh
 ["foo.bar"]%                                    
